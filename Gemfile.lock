@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    cuda-nmf (0.1.0)
+      numo-narray
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    numo-narray (0.9.2.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  cuda-nmf!
+
+BUNDLED WITH
+   2.2.22
