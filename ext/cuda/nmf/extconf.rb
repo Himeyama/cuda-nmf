@@ -6,10 +6,10 @@ require 'mkmf'
 $CXXFLAGS += ' -std=c++11'
 # rubocop:enable Style/GlobalVars
 
-cuda_dirs = Dir.glob('/usr/local/cuda-*')
+cuda_dirs = Dir.glob('/usr/local/cuda-*').sort
 raise SystemCallError, 2 if cuda_dirs.empty?
 
-cuda_dir = cuda_dirs[-1]
+cuda_dir = cuda_dirs[0]
 dir_config('cuda', "#{cuda_dir}/targets/x86_64-linux/include",
            "#{cuda_dir}/targets/x86_64-linux/lib/stubs")
 
