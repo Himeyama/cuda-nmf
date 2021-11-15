@@ -1,19 +1,23 @@
 PATH
   remote: .
   specs:
-    cuda-nmf (0.1.0)
+    cuda-nmf (0.2.1)
       numo-narray
 
 GEM
   remote: https://rubygems.org/
   specs:
     numo-narray (0.9.2.0)
+    rake (13.0.6)
+    rake-compiler (1.1.1)
+      rake
 
 PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
   cuda-nmf!
+  rake-compiler
 
 BUNDLED WITH
    2.2.22

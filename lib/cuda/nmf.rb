@@ -10,19 +10,28 @@ module Cuda
 
     # NMF class
     class NMF
-      def initialize(data, n_components, eps = 1e-4)
+      def initialize(data, n_components, tol = 1e-4, max_iter = 200)
         # x: Numo::<T>Float
         # n_components: Integet
         # eps: Float
         data_class = data.class
         @m, @n, @k = data.shape + [n_components]
-        @x = data
+        @max_iter = max_iter
+        @data = data
         @w = data_class.zeros(@m, @k)
         @h = data_class.zeros(@k, @n)
         @y = data_class.zeros(@m, @n)
-        @eps = eps
-        _NMF(@x, @w, @h, @y, @m, @n, @k, @eps)
+        @tol = tol
+        _NMF(@data, @w, @h, @y, @m, @n, @k, @tol)
       end
+
+      def rms
+        return @rms if @rms
+
+        @rms = (@y - @data).square.sum
+      end
+
+      attr_accessor :data, :w, :h, :y
     end
   end
 end
