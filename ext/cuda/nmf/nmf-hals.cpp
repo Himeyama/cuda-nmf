@@ -16,7 +16,7 @@ class NMF{
         cublasDcopy(n, x, incx, y, incy);
     }
 
-    NMF(long m, long n, long k, T *dat, T *rms, T eps = 1e-4){
+    NMF(long m, long n, long k, T *dat, T *rss, T* ss, T eps = 1e-4){
         n_samples = m;
         n_features = n;
         n_components = k;
@@ -88,13 +88,14 @@ class NMF{
                 cublasSetMatrix(1, m, sizeof(T), h_n_tmp, 1, wj.dMat, 1);
                 w.setCol(j, wj);
             }
-
-            // rms
-            w.dot(h, y.dMat);
-            sq = y.copy();
-            sq -= x;
-            *rms = sqrt(sq.sumSq());
         }
+        // rss 残差平方和
+        w.dot(h, y.dMat);
+        sq = y.copy();
+        *ss = sq.sumSq();
+        sq -= x;
+        *rss = sq.sumSq();
+        
         hj.freeMat();
         aj.freeMat();
         bj.freeMat();
