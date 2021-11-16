@@ -14,13 +14,16 @@ VALUE rb_nmf_NMF(VALUE self, VALUE X, VALUE W, VALUE H, VALUE Y, VALUE rb_m, VAL
     long m = NUM2LONG(rb_m), n = NUM2LONG(rb_n), k = NUM2LONG(rb_k);
     T eps = NUM2DBL(rb_eps);
     T *data = (T*)na_get_pointer(X);
-    NMF<T> nmf(m, n, k, data, eps);
+    T rms;
+    NMF<T> nmf(m, n, k, data, &rms, eps);
+    rb_iv_set(self, "@rms", DBL2NUM(rms));
     T *w = (T*)na_get_pointer(W);
     T *h = (T*)na_get_pointer(H);
     T *y = (T*)na_get_pointer(Y);
     memcpy(w, nmf.W, sizeof(T) * m * k);
     memcpy(h, nmf.H, sizeof(T) * k * n);
     memcpy(y, nmf.Y, sizeof(T) * m * n);
+    return self;
 }
 
 extern "C" {

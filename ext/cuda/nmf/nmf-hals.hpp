@@ -15,7 +15,7 @@ class NMF{
 
     void cublasCopy(int n, const double *x, int incx, double *y, int incy);
 
-    NMF(long m, long n, long k, T *dat, T eps = 1e-4);
+    NMF(long m, long n, long k, T *dat, T* rms, T eps = 1e-4);
 };
 
 #endif

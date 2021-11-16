@@ -236,6 +236,19 @@ class CuMatrix{
     void setCol(std::int64_t i, CuMatrix<T> b){
         cublasCopy(rowSize, b.dMat, 1, dMat + i, colSize);
     }
+
+    // 型によって分ける
+    float cublasDot(int n, const float *x, int incx, const float *y, int incy){
+        return cublasSdot(n, x, incx, y, incy);
+    }
+    double cublasDot(int n, const double *x, int incx, const double *y, int incy){
+        return cublasDdot(n, x, incx, y, incy);
+    }
+
+    // 行列の2乗和
+    T sumSq(){
+        return cublasDot(rowSize * colSize, dMat, 1, dMat, 1);
+    }
 };
 
 template class CuMatrix<float>;

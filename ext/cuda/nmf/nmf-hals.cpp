@@ -16,7 +16,7 @@ class NMF{
         cublasDcopy(n, x, incx, y, incy);
     }
 
-    NMF(long m, long n, long k, T *dat, T eps = 1e-4){
+    NMF(long m, long n, long k, T *dat, T *rms, T eps = 1e-4){
         n_samples = m;
         n_features = n;
         n_components = k;
@@ -38,11 +38,12 @@ class NMF{
             djj(1, 1),
             w(m, k),
             h(k, n),
-            y(m, n);
+            y(m, n),
+            sq(m, n);
         T* h_m_tmp = (T*)malloc(sizeof(T) * n);
         T* h_n_tmp = (T*)malloc(sizeof(T) * m);
 
-        for(int iter = 0; iter < 100; iter++){
+        for(int iter = 0; iter < 200; iter++){
             x.tdot(w, a.dMat);
             w.tdot(w, b.dMat);
 
@@ -87,9 +88,13 @@ class NMF{
                 cublasSetMatrix(1, m, sizeof(T), h_n_tmp, 1, wj.dMat, 1);
                 w.setCol(j, wj);
             }
-        }
 
-        w.dot(h, y.dMat);
+            // rms
+            w.dot(h, y.dMat);
+            sq = y.copy();
+            sq -= x;
+            *rms = sqrt(sq.sumSq());
+        }
         hj.freeMat();
         aj.freeMat();
         bj.freeMat();

@@ -38,6 +38,7 @@ class CuMatrix{
         void freeMat();
         void inspect();
         T* toMem();
+        T sumSq();
 };
 
 #endif
