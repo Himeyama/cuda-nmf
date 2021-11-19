@@ -6,7 +6,7 @@ template <class T>
 class NMF{
     public:
     long n_samples, n_components, n_features;
-    T *W, *H, *Y;
+    T *W, *H, *Y, *E;
 
     void cublasCopy(int n, const float *x, int incx, float *y, int incy){
         cublasScopy(n, x, incx, y, incy);
@@ -39,7 +39,8 @@ class NMF{
             w(m, k),
             h(k, n),
             y(m, n),
-            sq(m, n);
+            sq(m, n),
+            e(m, n);
         T* h_m_tmp = (T*)malloc(sizeof(T) * n);
         T* h_n_tmp = (T*)malloc(sizeof(T) * m);
 
@@ -96,6 +97,10 @@ class NMF{
         sq -= x;
         *rss = sq.sumSq();
         
+        // e 剰余誤差
+        e = y.copy();
+        e -= x;
+
         hj.freeMat();
         aj.freeMat();
         bj.freeMat();
@@ -118,10 +123,12 @@ class NMF{
         W = w.toMem();
         H = h.toMem();
         Y = y.toMem();
+        E = e.toMem();
 
         w.freeMat();
         h.freeMat();
         y.freeMat();
+        e.freeMat();
     }
 };
 

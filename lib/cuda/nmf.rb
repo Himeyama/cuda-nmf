@@ -21,8 +21,9 @@ module Cuda
         @w = data_class.zeros(@m, @k)
         @h = data_class.zeros(@k, @n)
         @y = data_class.zeros(@m, @n)
+        @e = data_class.zeros(@m, @n)
         @tol = tol
-        _NMF(@data, @w, @h, @y, @m, @n, @k, @tol)
+        _NMF(@data, @w, @h, @y, @e, @m, @n, @k, @tol)
       end
 
       def rms
@@ -31,7 +32,7 @@ module Cuda
         @rms = (@y - @data).square.sum
       end
 
-      attr_accessor :data, :w, :h, :y
+      attr_accessor :data, :w, :h, :y, :e
       attr_reader :rss, :ss, :vaf
     end
   end

@@ -10,7 +10,7 @@
 #include <numo/narray.h>
 
 template <typename T>
-VALUE rb_nmf_NMF(VALUE self, VALUE X, VALUE W, VALUE H, VALUE Y, VALUE rb_m, VALUE rb_n, VALUE rb_k, VALUE rb_eps){
+VALUE rb_nmf_NMF(VALUE self, VALUE X, VALUE W, VALUE H, VALUE Y, VALUE E, VALUE rb_m, VALUE rb_n, VALUE rb_k, VALUE rb_eps){
     long m = NUM2LONG(rb_m), n = NUM2LONG(rb_n), k = NUM2LONG(rb_k);
     T eps = NUM2DBL(rb_eps);
     T *data = (T*)na_get_pointer(X);
@@ -23,9 +23,11 @@ VALUE rb_nmf_NMF(VALUE self, VALUE X, VALUE W, VALUE H, VALUE Y, VALUE rb_m, VAL
     T *w = (T*)na_get_pointer(W);
     T *h = (T*)na_get_pointer(H);
     T *y = (T*)na_get_pointer(Y);
+    T *e = (T*)na_get_pointer(E);
     memcpy(w, nmf.W, sizeof(T) * m * k);
     memcpy(h, nmf.H, sizeof(T) * k * n);
     memcpy(y, nmf.Y, sizeof(T) * m * n);
+    memcpy(e, nmf.E, sizeof(T) * m * n);
     return self;
 }
 
@@ -34,6 +36,6 @@ extern "C" {
         VALUE rb_cCuda = rb_define_module("Cuda");
         VALUE rb_cCudaNMF = rb_define_module_under(rb_cCuda, "NMF");
         VALUE rb_cNMF = rb_define_class_under(rb_cCudaNMF, "NMF", rb_cObject);
-        rb_define_method(rb_cNMF, "_NMF", rb_nmf_NMF<double>, 8);
+        rb_define_method(rb_cNMF, "_NMF", rb_nmf_NMF<double>, 9);
     }
 }

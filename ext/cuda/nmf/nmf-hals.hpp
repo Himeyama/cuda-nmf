@@ -9,7 +9,7 @@ template <class T>
 class NMF{
     public:
     long n_samples, n_components, n_features;
-    T *W, *H, *Y;
+    T *W, *H, *Y, *E;
 
     void cublasCopy(int n, const float *x, int incx, float *y, int incy);
 
