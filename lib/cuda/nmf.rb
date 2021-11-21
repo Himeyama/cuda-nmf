@@ -33,7 +33,7 @@ module Cuda
       end
 
       attr_accessor :data, :w, :h, :y, :e
-      attr_reader :rss, :ss, :vaf
+      attr_reader :rss, :ss, :vaf, :m, :n, :k
     end
   end
 end
